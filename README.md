@@ -1,3 +1,3 @@
 # MMWeather
 敏敏天气    o(*￣︶￣*)o
-![](https://github.com/xmydeveloper/MeterialTest/blob/master/screenshot/meterialdesign.gif)
+![](https://github.com/xmydeveloper/MMWeather/blob/master/app/src/main/res/drawable/ic_launcher.png)
