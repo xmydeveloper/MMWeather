@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">敏敏天气</string>
+    <string name="desc">敏敏天气让\n生活更简单</string>
 </resources>
