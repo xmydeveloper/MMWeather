@@ -2,9 +2,11 @@ package com.xlw.mmweather.util;
 
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
 import com.xlw.mmweather.db.City;
 import com.xlw.mmweather.db.County;
 import com.xlw.mmweather.db.Province;
+import com.xlw.mmweather.gson.Weather;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,12 +42,11 @@ public class Utility {
     }
 
 
-
     /**
      * 解析和处理服务器返回的市数据
      */
 
-    public static boolean handleCityResponse(String response,int provinceId) {
+    public static boolean handleCityResponse(String response, int provinceId) {
         if (!TextUtils.isEmpty(response)) {
             try {
                 JSONArray allCities = new JSONArray(response);
@@ -72,7 +73,7 @@ public class Utility {
      * 解析和处理服务器返回的县数据
      */
 
-    public static boolean handleCountyResponse(String response,int cityId) {
+    public static boolean handleCountyResponse(String response, int cityId) {
         if (!TextUtils.isEmpty(response)) {
             try {
                 JSONArray allCounties = new JSONArray(response);
@@ -92,6 +93,19 @@ public class Utility {
         }
 
         return false;
+    }
+
+
+    public static Weather handleWeatherResponse(String response) {
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather");
+            String weatherContent = jsonArray.getJSONObject(0).toString();
+            return new Gson().fromJson(weatherContent, Weather.class);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 

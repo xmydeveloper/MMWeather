@@ -1,6 +1,7 @@
 package com.xlw.mmweather;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -108,6 +109,13 @@ public class ChooseAreaFragment extends Fragment {
                 } else if (currentLevel == LEVEL_CITY) {
                     selectedCity = cityList.get(i);
                     quryCounties();
+                } else if (currentLevel == LEVEL_COUNTY) {
+                    String weatherId = countyList.get(i).getWeatherId();
+                    Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                    intent.putExtra("weather_id", weatherId);
+                    startActivity(intent);
+                    getActivity().finish();
+
                 }
             }
         });
@@ -154,19 +162,19 @@ public class ChooseAreaFragment extends Fragment {
         mTittle.setText(selectedProvince.getProvinceName());
         mBack.setVisibility(View.VISIBLE);
         cityList = DataSupport.where("provinceid=?", String.valueOf(selectedProvince.getId())).find(City.class);
-        if (cityList.size()>0){
+        if (cityList.size() > 0) {
             dataList.clear();
-            for(City city:cityList){
+            for (City city : cityList) {
                 dataList.add(city.getCityName());
             }
             adapter.notifyDataSetChanged();
             listView.setSelection(0);
-            currentLevel=LEVEL_CITY;
-        }else {
+            currentLevel = LEVEL_CITY;
+        } else {
             int provinceCode = selectedProvince.getProvinceCode();
 
-            String address = "http://guolin.tech/api/china/"+provinceCode;
-            quryFromServer(address,"city");
+            String address = "http://guolin.tech/api/china/" + provinceCode;
+            quryFromServer(address, "city");
         }
 
     }
@@ -175,25 +183,24 @@ public class ChooseAreaFragment extends Fragment {
     private void quryCounties() {
         mTittle.setText(selectedCity.getCityName());
         mBack.setVisibility(View.VISIBLE);
-        countyList =DataSupport.where("cityid=?",String.valueOf(selectedCity.getId())).find(County.class);
-        if (countyList.size()>0){
+        countyList = DataSupport.where("cityid=?", String.valueOf(selectedCity.getId())).find(County.class);
+        if (countyList.size() > 0) {
             dataList.clear();
-            for(County county:countyList){
+            for (County county : countyList) {
                 dataList.add(county.getCountyName());
             }
             adapter.notifyDataSetChanged();
             listView.setSelection(0);
             currentLevel = LEVEL_COUNTY;
-        }else {
+        } else {
             int provinceCode = selectedProvince.getProvinceCode();
             int cityCode = selectedCity.getCityCode();
 
-            String address = "http://guolin.tech/api/china/"+provinceCode+"/"+cityCode;
+            String address = "http://guolin.tech/api/china/" + provinceCode + "/" + cityCode;
 
-            quryFromServer(address,"county");
+            quryFromServer(address, "county");
 
         }
-
 
 
     }

@@ -12,7 +12,8 @@ public class Basic {
     @SerializedName("id")
     public String weatherId;
 
-    public Update upsate;
+    @SerializedName("update")
+    public Update update;
 
     public class Update {
         @SerializedName("loc")
