@@ -84,13 +84,6 @@ public class ChooseAreaFragment extends Fragment {
     private ArrayAdapter<String> adapter;
     private ProgressDialog progressDialog;
 
-
-    /**
-     * @param inflater
-     * @param container
-     * @param savedInstanceState
-     * @return
-     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
