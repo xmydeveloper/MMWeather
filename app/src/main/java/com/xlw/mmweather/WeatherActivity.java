@@ -1,5 +1,6 @@
 package com.xlw.mmweather;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.xlw.mmweather.gson.Forecast;
 import com.xlw.mmweather.gson.Weather;
+import com.xlw.mmweather.service.AutoUpdateService;
 import com.xlw.mmweather.util.HttpUtils;
 import com.xlw.mmweather.util.Utility;
 
@@ -183,6 +185,11 @@ public class WeatherActivity extends AppCompatActivity {
                             editor.apply();
                             showWeatherInfo(weather);
 
+
+                            //开启后台更新程序入口
+                            Intent intent = new Intent(WeatherActivity.this, AutoUpdateService.class);
+                            startService(intent);
+                            
                         } else {
                             Toast.makeText(WeatherActivity.this, "获取天气信息为空！", Toast.LENGTH_SHORT).show();
                         }
