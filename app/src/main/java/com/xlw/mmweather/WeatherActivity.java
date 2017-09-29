@@ -1,6 +1,8 @@
 package com.xlw.mmweather;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -47,6 +49,11 @@ public class WeatherActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= 21) {
+            View decorView = getWindow().getDecorView();
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
         setContentView(R.layout.activity_weather);
 
         initView();
@@ -68,19 +75,14 @@ public class WeatherActivity extends AppCompatActivity {
         sportText = (TextView) findViewById(R.id.sport_text);
 
 
-
-
-
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         String bingPic = prefs.getString("bing_pic", null);
-        if (bingPic!=null){
+        if (bingPic != null) {
             Glide.with(this).load(bingPic).into(bingPicImag);
-        }else {
+        } else {
             loadBingPic();
         }
-
-
 
 
         String weatherString = prefs.getString("weather", null);
@@ -107,7 +109,7 @@ public class WeatherActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 final String bingPic = response.body().string();
                 SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this).edit();
-                editor.putString("bing_pic",bingPic);
+                editor.putString("bing_pic", bingPic);
                 editor.apply();
                 runOnUiThread(new Runnable() {
                     @Override
@@ -127,47 +129,45 @@ public class WeatherActivity extends AppCompatActivity {
         });
 
 
-
     }
 
     // 向服务器请求数据
     private void requestWeather(String weatherId) {
         String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key=3e3d180674f140fdae70134f031d7ec0";
-        Log.e("requestWeather","weatherUrl------------"+weatherUrl);
+        Log.e("requestWeather", "weatherUrl------------" + weatherUrl);
         HttpUtils.sendOkHttpRequest(weatherUrl, new Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String responseText = response.body().string();
-                Log.e("requestWeather","responseText------------"+responseText);
+                Log.e("requestWeather", "responseText------------" + responseText);
                 final Weather weather = Utility.handleWeatherResponse(responseText);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (weather!=null&&"ok".equals(weather.status)){
+                        if (weather != null && "ok".equals(weather.status)) {
                             SharedPreferences.Editor editor = PreferenceManager.
                                     getDefaultSharedPreferences(WeatherActivity.this).edit();
-                                editor.putString("weather",responseText);
+                            editor.putString("weather", responseText);
                             editor.apply();
                             showWeatherInfo(weather);
 
-                        }else {
+                        } else {
                             Toast.makeText(WeatherActivity.this, "获取天气信息为空！", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
 
 
-
             }
 
             @Override
             public void onFailure(Call call, IOException e) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(WeatherActivity.this, "获取天气信息失败！", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(WeatherActivity.this, "获取天气信息失败！", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
 
         });
