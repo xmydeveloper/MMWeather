@@ -54,6 +54,8 @@ public class WeatherActivity extends AppCompatActivity {
     public SwipeRefreshLayout swipeRefresh;
     public DrawerLayout drawerLayout;
     private Button navBt;
+    private String weatherId;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -101,7 +103,7 @@ public class WeatherActivity extends AppCompatActivity {
 
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
 
-        final String weatherId;
+//        final String weatherId;
 
         if (weatherString != null) {
             //有缓存直接解析数据
@@ -167,6 +169,7 @@ public class WeatherActivity extends AppCompatActivity {
 
     // 向服务器请求数据
     public void requestWeather(String weatherId) {
+        this.weatherId = weatherId;
         String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key=3e3d180674f140fdae70134f031d7ec0";
         Log.e("requestWeather", "weatherUrl------------" + weatherUrl);
         HttpUtils.sendOkHttpRequest(weatherUrl, new Callback() {
@@ -189,7 +192,7 @@ public class WeatherActivity extends AppCompatActivity {
                             //开启后台更新程序入口
                             Intent intent = new Intent(WeatherActivity.this, AutoUpdateService.class);
                             startService(intent);
-                            
+
                         } else {
                             Toast.makeText(WeatherActivity.this, "获取天气信息为空！", Toast.LENGTH_SHORT).show();
                         }
