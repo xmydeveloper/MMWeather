@@ -10,8 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -37,7 +35,7 @@ import okhttp3.Response;
 /**
  * Created by xmydeveloper on 2017/9/29/0029.
  */
-public class WeatherActivity extends AppCompatActivity {
+public class WeatherActivity extends BaseActivity {
 
     private ScrollView weatherLayout;
     private TextView titleCity;
@@ -171,12 +169,12 @@ public class WeatherActivity extends AppCompatActivity {
     public void requestWeather(String weatherId) {
         this.weatherId = weatherId;
         String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key=3e3d180674f140fdae70134f031d7ec0";
-        Log.e("requestWeather", "weatherUrl------------" + weatherUrl);
+//        Logger.d("requestWeather", "weatherUrl------------" + weatherUrl);
         HttpUtils.sendOkHttpRequest(weatherUrl, new Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String responseText = response.body().string();
-                Log.e("requestWeather", "responseText------------" + responseText);
+//                Logger.json(responseText);
                 final Weather weather = Utility.handleWeatherResponse(responseText);
                 runOnUiThread(new Runnable() {
                     @Override
