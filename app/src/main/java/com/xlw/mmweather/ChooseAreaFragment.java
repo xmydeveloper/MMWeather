@@ -161,7 +161,7 @@ public class ChooseAreaFragment extends Fragment {
             currentLevel = LEVEL_PROVINCE;
         } else {
             //数据库里面数据为空，去服务器获取
-            String address = " http://guolin.tech/api/china";
+            String address = "http://guolin.tech/api/china";
             quryFromServer(address, "province");
         }
 

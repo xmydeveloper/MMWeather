@@ -15,5 +15,10 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Logger.addLogAdapter(new AndroidLogAdapter());
+//
+//        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//        long triggerAtTime = SystemClock.elapsedRealtime()+10*1000;
+//        manager.set(AlarmManager.RTC_WAKEUP, triggerAtTime,pendingIntent);
+
     }
 }
